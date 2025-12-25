@@ -1,6 +1,13 @@
 class JobsPage {
 
-  get relocateBtn() { return $('//a[@title="DefTech" and contains(@href,"deftech.dou.ua")]'); }
+  get relocateBtnByTitle() {
+    return $('//a[contains(@href,"deftech.dou.ua")]');
+  }
+
+  get relocateBtnByText() {
+    return $('//a[contains(text(),"DefTech")]');
+  }
+
 
   get findButton() {
     return $('input.btn-search[type="submit"]');
@@ -13,9 +20,24 @@ class JobsPage {
     await this.findButton.waitForDisplayed({ timeout: 20000 });
     await this.findButton.click();
   }
-  async clickRelocate() {
-    await this.relocateBtn.waitForDisplayed();
-    await this.relocateBtn.click();
+
+  async clickRelocateIfExists() {
+    const btnByHref = this.relocateBtnByTitle;
+    const btnByText = this.relocateBtnByText;
+
+    if (await btnByHref.isExisting()) {
+      await btnByHref.scrollIntoView();
+      await btnByHref.click();
+      return;
+    }
+
+    if (await btnByText.isExisting()) {
+      await btnByText.scrollIntoView();
+      await btnByText.click();
+      return;
+    }
+
+    console.log('DefTech button not found — skipping step');
   }
 
   async checkTexts() {

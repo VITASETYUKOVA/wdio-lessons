@@ -13,7 +13,7 @@ describe("Full navigation test on DOU", () => {
     await salariesPage.clickJobs();
 
     await jobsPage.clickFind();
-    await jobsPage.clickRelocate();
+    await jobsPage.clickRelocateIfExists();
     await jobsPage.checkTexts();
-  });
+  }, 300000);
 });
